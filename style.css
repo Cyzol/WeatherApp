@@ -1,32 +1,44 @@
 *,
 *::after,
-*::before{
+*::before {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
 
 
+a {
+    text-decoration: none;
+    cursor: pointer;
+    color: black;
+}
+
+a:hover {
+    color: chartreuse;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
 /*LOGO - BIG*/
 
-.logo{
+.logo {
     margin-top: 20px;
 }
 
-.logo-image{
+.logo-image {
     width: 80px;
     height: 80px;
     margin-right: 2px;
 }
 
-.logo-p{
+.logo-p {
     font-size: 2rem;
     color: #494C4F;
 }
 
 /* SEARCHBAR */
 
-.input-city{
+.input-city {
     margin-top: 20px;
     height: 60px;
     font-size: 1.5rem;
@@ -44,13 +56,13 @@
     border-radius: 15px;
 }
 
-.list-city{
+.list-city {
     margin-top: 50px;
     overflow-y: auto;
     height: 70vh;
 }
 
-.right{
+.left {
     margin-top: 50px;
     background: url(image/adv-left.jpg);
     background-size: cover;
@@ -58,36 +70,101 @@
     height: 70vh;
 }
 
+
 /* SLIDER ADV */
 
-.slider{
-    margin-top: 10px;
-    height: 10vh;
+.slider {
+
+    margin-top: 40px;
+    margin-right: 0 !important;
 }
 
-.height-image{
+
+.height-image {
     height: 30vh;
+    margin: 0;
 }
 
 /*FOOTER*/
 footer {
-    margin-top: 50px;
-    background-color: #202A2C;
+    margin-top: 20px;
+    text-align: center;
 }
 
+/*Plot section*/
 
+.plot {
+    height: 50vh;
+}
 
+.list-plot {
+    margin-top: 80px;
+    text-align: center;
+}
 
+.right {
+    margin-top: 80px;
+    background: url(image/gaz.jpg);
+    background-size: cover;
+    background-position: center;
+    height: 60vh;
+}
+
+/*login h1*/
+
+.login-h1 {
+    padding-bottom: 2rem;
+    font-weight: bold
+}
+
+.margin-bottm {
+    margin-bottom: 50px;
+}
 
 /* icons */
 
 .fa-user,
-.fa-sign-out-alt{
+.fa-sign-out-alt {
     font-size: 1.5rem;
     opacity: 0.8;
 }
 
 .fa-user:hover,
-.fa-sign-out-alt:hover{
+.fa-sign-out-alt:hover {
     opacity: 0.7;
+}
+
+@media (max-width: 1000px) {
+
+    .list-city {
+        margin-top: 50px;
+        overflow-y: auto;
+        height: 40vh;
+    }
+
+    .left {
+        height: 50vh;
+    }
+}
+
+@media (max-width: 570px) {
+    .logo-image {
+        width: 60px;
+        height: 60px;
+    }
+
+    .logo-big {
+        width: 60px;
+    }
+
+
+    .logo-p {
+        width: 100px;
+        font-size: 1.5rem;
+        color: #494C4F;
+    }
+
+    #map {
+        margin: 20px;
+    }
 }
