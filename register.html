@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <!-- lefleat css -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <!-- font awesome cdnj -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <title>Weather.com</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="index.html">
+          <img src="image/cloud.png" width="30" height="30" class="d-inline-block align-top" alt="">
+          Weather.com
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto ">
+            <li class="nav-item active">
+              <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"></a>
+            </li>
+            <!-- dropdown menu -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+            </li>
+          </ul>
+          <ul class="navbar-nav ">
+            <li class="nav-item active">
+              <a class="nav-link" href="login.html"><i class="fas fa-user"></i></a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i></a>
+            </li>
+          </ul>
+        </div>
+    </nav>
+    
+    <h1 class="login-h1 text-center">SignUp into Weather.com</h1>    
+      <div class="container">
+        <div class="row">
+            <div class="col-xl-5 col-md-8 col-sm-12 mx-auto">
+                <div class="card card-body">                         
+                    <form id="submitForm" action="" method="post"><input type="hidden" value="">
+                        <div class="form-group">
+                            <label for="user_name">Username</label>
+                            <input type="text" class="form-control text-lowercase" id="user_name" required="" name="username" value="">
+                        </div>                    
+                        <div class="form-group required">
+                            <label class="d-flex flex-row align-items-center" for="password">Password </label>
+                            <input type="password" class="form-control" required="" id="user_password" name="password" value="">
+                        </div>
+                        <div class=" form-group required">
+                            <label class="d-flex flex-row align-items-center" for="password"> Confirm Password </label>
+                            <input type="password" class="form-control" required="" id="confirm_user_password" name="password" value="">
+                        </div>
+                        <div class="margin-bottm form-group required">
+                            <label class="d-flex flex-row align-items-center" for="password"> E-mail </label>
+                            <input type="email" class="form-control" required="" id="confirm_user_password" name="password" value="">
+                        </div>
+                        <div class="form-group pt-1">
+                            <button id ="register_button" class="btn btn-primary btn-block" type="submit" >Sign Up</button>
+                        </div>
+                        <p class="small-xl pt-3 text-center">
+                            <span class="text-muted">You're member?</span>
+                            <a href="login.html">Login</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+                     
+      
+
+        <!-- <footer> ADMIN OKON</footer> -->
+
+        
+        <!-- bootstrap js -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+        <!-- lefleat js -->
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+        <script src="script.js"></script>
+
+        <!-- plotly js-->
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</body>
+</html>
