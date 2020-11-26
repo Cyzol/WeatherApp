@@ -24,7 +24,7 @@ let popup = L.popup();
 
 
 let theMarker = {};
-function onMapClick(e) {
+async function onMapClick(e) {
 
     if (theMarker != undefined) {
         map.removeLayer(theMarker);
@@ -34,26 +34,29 @@ function onMapClick(e) {
 
     let api = `https://api.openweathermap.org/data/2.5/weather?lat=${e.latlng['lat']}&lon=${e.latlng['lng']}&appid=${key}`;
 
-    fetch(api)
+    await fetch(api)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
-            weather.city = data.name;
+            // console.log(data);
+            weather.name = data.name;
             weather.temp = data.main.temp - 273.15;
             weather.pressure = data.main.pressure;
             weather.wind = data.wind.speed;
+            weather.icon = data.weather[0].icon;
         })
 
     adv(weather.temp);
-
-
-
     popup
         .setLatLng(e.latlng)
-        .setContent("Miasto : " + weather.city +
-            "<br>Temperatura : " + Math.floor(weather.temp) + " &#x2103" + "<br>Ciśnienie : " + weather.pressure + " hPa" + "<br> Wiatr : " + weather.wind + " km/h" +
-            "<br><button id = button-wykres >Wykres</button>") //e.latlng.toString()
+        .setContent(
+            '<img class="icon" src="https://openweathermap.org/img/wn/' + weather.icon + '@2x.png"<br>' +
+            '<div class=popup-city><br>Miasto : ' + weather.name + '</div>' +
+            "<div class=popup-temp><br>Temperatura : " + Math.floor(weather.temp) + " &#x2103</div>" +
+            "<div class=popup-pressure><br>Ciśnienie : " + weather.pressure + " hPa</div>" +
+            "<div class=popup-wind><br> Wiatr : " + weather.wind + " km/h</div>" +
+            "<br><button id = button-wykres >Wykres</button>")
         .openOn(map)
+
 
     let wykresy = document.getElementById("test");
     document.getElementById("button-wykres").addEventListener("click", function () {
@@ -71,10 +74,12 @@ map.addEventListener("click", onMapClick);
 function addCityFunction() {
     var node = document.createElement("LI");
     node.setAttribute('class', 'list-group-item');
-    var textnode = document.createElement("Label")
+    var textnode = document.createElement("a")
+    textnode.setAttribute("class", "listItem");
     textnode.innerHTML = document.getElementById("addCityInput").value
     node.appendChild(textnode);
     document.getElementById("cityList").appendChild(node);
+    refreshList();
 }
 
 
@@ -134,7 +139,6 @@ function WykresCisnienia() {
 
 
 function adv(temp) {
-    // let temp = 26;
     switch (true) {
         case (temp > 10 && temp <= 25):
             document.getElementById("adv1").src = "https://www.e-zikoapteka.pl/gripex-hot-lek-przeciw-objawom-przeziebienia-i-grypy-12-saszetek.2.jpg";
@@ -154,3 +158,96 @@ function adv(temp) {
 }
 
 // document.addEventListener('DOMContentLoaded', adv);
+
+
+
+//search city from list 
+function refreshList() {
+
+    let foo = document.querySelectorAll('.listItem');
+
+    for (let i = 0; i < foo.length; i++) {
+        console.log(foo[i].addEventListener("click", modifyText))
+    }
+}
+refreshList();
+
+// lista miast po prawej 
+function modifyText(e) {
+    let city2 = e.target.innerHTML;
+    let api = `https://api.openweathermap.org/data/2.5/weather?q=${city2}&appid=${key}&units=metric`;
+    let lon;
+    let lat;
+    let name;
+    let temp;
+    let pressure;
+    let wind;
+    let icon;
+    fetch(api)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            lon = data.coord.lon;
+            lat = data.coord.lat;
+            name = data.name;
+            temp = data.main.temp;
+            pressure = data.main.pressure;
+            wind = data.wind.speed;
+            icon = data.weather[0].icon;
+            map.panTo(new L.LatLng(lat, lon));
+
+            popup
+                .setLatLng(data.coord)
+                .setContent(
+                    '<img class="icon" src="https://openweathermap.org/img/wn/' + icon + '@2x.png"<br>' +
+                    '<div class=popup-city><br>Miasto : ' + name + '</div>' +
+                    "<div class=popup-temp><br>Temperatura : " + Math.floor(temp) + " &#x2103</div>" +
+                    "<div class=popup-pressure><br>Ciśnienie : " + pressure + " hPa</div>" +
+                    "<div class=popup-wind><br> Wiatr : " + wind + " km/h</div>" +
+                    "<br><button id = button-wykres >Wykres</button>")
+                .openOn(map)
+        })
+}
+
+
+// search bar 
+document.querySelector("#searchInput").addEventListener("keyup", function (event) {
+    if (event.keyCode === 13) {
+        const value = document.querySelector("#searchInput").value;
+        let api = `https://api.openweathermap.org/data/2.5/weather?q=${value}&appid=${key}&units=metric`;
+
+        let name;
+        let temp;
+        let pressure;
+        let wind;
+        let icon;
+        fetch(api)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.weather[0].icon);
+                lon = data.coord.lon;
+                lat = data.coord.lat;
+                name = data.name;
+                temp = data.main.temp;
+                pressure = data.main.pressure;
+                wind = data.wind.speed;
+                icon = data.weather[0].icon;
+                map.panTo(new L.LatLng(lat, lon));
+
+                popup
+                    .setLatLng(data.coord)
+                    .setContent(
+                        '<img class="icon" src="https://openweathermap.org/img/wn/' + icon + '@2x.png"<br>' +
+                        '<div class=popup-city><br>Miasto : ' + name + '</div>' +
+                        "<div class=popup-temp><br>Temperatura : " + Math.floor(temp) + " &#x2103</div>" +
+                        "<div class=popup-pressure><br>Ciśnienie : " + pressure + " hPa</div>" +
+                        "<div class=popup-wind><br> Wiatr : " + wind + " km/h</div>" +
+                        "<br><button id = button-wykres >Wykres</button>")
+                    .openOn(map)
+            })
+    }
+})
+
+
+
+
