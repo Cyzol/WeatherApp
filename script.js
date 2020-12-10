@@ -22,6 +22,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 
 let popup = L.popup();
 
+const wykresy = document.getElementById("test");
 
 let theMarker = {};
 async function onMapClick(e) {
@@ -29,20 +30,20 @@ async function onMapClick(e) {
     if (theMarker != undefined) {
         map.removeLayer(theMarker);
     }
-
     theMarker = L.marker(e.latlng).addTo(map);
 
-    let api = `https://api.openweathermap.org/data/2.5/weather?lat=${e.latlng['lat']}&lon=${e.latlng['lng']}&appid=${key}`;
+    let api = `https://api.openweathermap.org/data/2.5/weather?lat=${e.latlng['lat']}&lon=${e.latlng['lng']}&appid=${key}&units=metric`;
 
     await fetch(api)
         .then(response => response.json())
         .then(data => {
             // console.log(data);
             weather.name = data.name;
-            weather.temp = data.main.temp - 273.15;
-            weather.pressure = data.main.pressure;
-            weather.wind = data.wind.speed;
+            weather.temp = data.main.temp;
             weather.icon = data.weather[0].icon;
+            weather.description = data.weather[0].description;
+            weather.feels_like = data.main.feels_like;
+
         })
 
     adv(weather.temp);
@@ -50,26 +51,21 @@ async function onMapClick(e) {
         .setLatLng(e.latlng)
         .setContent(
             '<img class="icon" src="https://openweathermap.org/img/wn/' + weather.icon + '@2x.png"<br>' +
-            '<div class=popup-city><br>Miasto : ' + weather.name + '</div>' +
-            "<div class=popup-temp><br>Temperatura : " + Math.floor(weather.temp) + " &#x2103</div>" +
-            "<div class=popup-pressure><br>Ciśnienie : " + weather.pressure + " hPa</div>" +
-            "<div class=popup-wind><br> Wiatr : " + weather.wind + " km/h</div>" +
-            "<br><button id = button-wykres >Wykres</button>")
+            '<div class=popup-city><br>' + weather.name + '</div>' +
+            "<div class=popup-temp><br>" + Math.floor(weather.temp) + "&#176</div>" +
+            "<div class=popup-description><br>" + weather.description + " </div>" +
+            "<div class=popup-feels-like><br> Feels like " + Math.floor(weather.feels_like) + "</div>" +
+            "<br><button id = button-wykres>Wykres</button>")
         .openOn(map)
 
+        
+        document.getElementById("button-wykres").addEventListener("click", function () {
+            wykresy.scrollIntoView();
 
-    let wykresy = document.getElementById("test");
-    document.getElementById("button-wykres").addEventListener("click", function () {
-        wykresy.scrollIntoView();
-    });
+        });
 }
 
-
-
-
 map.addEventListener("click", onMapClick);
-
-
 
 function addCityFunction() {
     var node = document.createElement("LI");
@@ -176,13 +172,14 @@ refreshList();
 function modifyText(e) {
     let city2 = e.target.innerHTML;
     let api = `https://api.openweathermap.org/data/2.5/weather?q=${city2}&appid=${key}&units=metric`;
-    let lon;
     let lat;
+    let lon;
     let name;
     let temp;
-    let pressure;
-    let wind;
     let icon;
+    let description;
+    let feels_like;
+
     fetch(api)
         .then(response => response.json())
         .then(data => {
@@ -191,22 +188,33 @@ function modifyText(e) {
             lat = data.coord.lat;
             name = data.name;
             temp = data.main.temp;
-            pressure = data.main.pressure;
-            wind = data.wind.speed;
             icon = data.weather[0].icon;
+            description = data.weather[0].description;
+            feels_like = data.main.feels_like;
             map.panTo(new L.LatLng(lat, lon));
+
+            //new marker position
+            if (theMarker != undefined) {
+                map.removeLayer(theMarker);
+            }
+            theMarker = L.marker(new L.LatLng(lat, lon)).addTo(map);
 
             popup
                 .setLatLng(data.coord)
                 .setContent(
                     '<img class="icon" src="https://openweathermap.org/img/wn/' + icon + '@2x.png"<br>' +
-                    '<div class=popup-city><br>Miasto : ' + name + '</div>' +
-                    "<div class=popup-temp><br>Temperatura : " + Math.floor(temp) + " &#x2103</div>" +
-                    "<div class=popup-pressure><br>Ciśnienie : " + pressure + " hPa</div>" +
-                    "<div class=popup-wind><br> Wiatr : " + wind + " km/h</div>" +
+                    '<div class=popup-city><br>' + name + '</div>' +
+                    "<div class=popup-temp><br>" + Math.floor(temp) + "&#176</div>" +
+                    "<div class=popup-description><br>" + description + " </div>" +
+                    "<div class=popup-feels-like><br> Feels like " + Math.floor(feels_like) + "</div>" +
                     "<br><button id = button-wykres >Wykres</button>")
                 .openOn(map)
+
+                document.getElementById("button-wykres").addEventListener("click", function () {
+                    wykresy.scrollIntoView();
+                });    
         })
+
 }
 
 
@@ -218,9 +226,9 @@ document.querySelector("#searchInput").addEventListener("keyup", function (event
 
         let name;
         let temp;
-        let pressure;
-        let wind;
         let icon;
+        let description;
+        let feels_like;
         fetch(api)
             .then(response => response.json())
             .then(data => {
@@ -232,20 +240,33 @@ document.querySelector("#searchInput").addEventListener("keyup", function (event
                 pressure = data.main.pressure;
                 wind = data.wind.speed;
                 icon = data.weather[0].icon;
+                description = data.weather[0].description;
+                feels_like = data.main.feels_like;
                 map.panTo(new L.LatLng(lat, lon));
+
+                //new marker position
+                if (theMarker != undefined) {
+                    map.removeLayer(theMarker);
+                }
+                theMarker = L.marker(new L.LatLng(lat, lon)).addTo(map);
 
                 popup
                     .setLatLng(data.coord)
                     .setContent(
                         '<img class="icon" src="https://openweathermap.org/img/wn/' + icon + '@2x.png"<br>' +
-                        '<div class=popup-city><br>Miasto : ' + name + '</div>' +
-                        "<div class=popup-temp><br>Temperatura : " + Math.floor(temp) + " &#x2103</div>" +
-                        "<div class=popup-pressure><br>Ciśnienie : " + pressure + " hPa</div>" +
-                        "<div class=popup-wind><br> Wiatr : " + wind + " km/h</div>" +
+                        '<div class=popup-city><br>' + name + '</div>' +
+                        "<div class=popup-temp><br>" + Math.floor(temp) + "&#176</div>" +
+                        "<div class=popup-description><br>" + description + " </div>" +
+                        "<div class=popup-feels-like><br> Feels like " + Math.floor(feels_like) + "</div>" +
                         "<br><button id = button-wykres >Wykres</button>")
                     .openOn(map)
+
+                    document.getElementById("button-wykres").addEventListener("click", function () {
+                        wykresy.scrollIntoView();
+                    });
             })
     }
+
 })
 
 
